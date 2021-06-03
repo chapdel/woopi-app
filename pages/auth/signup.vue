@@ -6,22 +6,45 @@
       <div>
         <img class="mx-auto h-12 w-auto" src="/icon.png" alt="Woopi" />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
+          Create your account
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Or
           {{ " " }}
           <nuxt-link
-            :to="{ name: 'register' }"
+            :to="{ name: 'login' }"
             class="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            create your account annd join the mob
+            Sign in to your account
           </nuxt-link>
         </p>
       </div>
-      <form class="mt-8 space-y-6" @submit.prevent="login" method="POST">
+      <form class="mt-8 space-y-6" @submit.prevent="submit" method="POST">
         <input type="hidden" name="remember" value="true" />
         <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <span
+              v-if="form.errors && form.errors.name"
+              class="text-sm text-red-500"
+              >{{ form.errors.name[0] }}</span
+            >
+            <label for="user-name" class="sr-only">Username</label>
+            <input
+              id="user-name"
+              name="name"
+              autocomplete="name"
+              v-model="form.name"
+              required=""
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border"
+              placeholder="Username"
+              :class="{
+                'border-red-300 placeholder-red-500 text-red-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm':
+                  form.errors && form.errors.name,
+                'border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
+                  form.errors && !form.errors.name
+              }"
+            />
+          </div>
           <div>
             <span
               v-if="form.errors && form.errors.email"
@@ -39,9 +62,9 @@
               class="appearance-none rounded-none relative block w-full px-3 py-2 border"
               placeholder="Email address"
               :class="{
-                'border-red-300 placeholder-red-500 text-red-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm':
+                'border-red-300 placeholder-red-500 text-red-900 focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm':
                   form.errors && form.errors.email,
-                'border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
+                'border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
                   form.errors && !form.errors.email
               }"
             />
@@ -72,7 +95,7 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
           <div class="flex items-center">
             <input
               id="remember_me"
@@ -93,7 +116,7 @@
               Forgot your password?
             </a>
           </div>
-        </div>
+        </div> -->
 
         <div>
           <button
@@ -110,24 +133,26 @@
               />
             </span>
 
-            Sign in
+            Sign Up
           </button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   middleware: ["guest"],
   head() {
     return {
-      title: "Sign in to your account"
+      title: "Join your comminities"
     };
   },
   data() {
     return {
       form: {
+        name: "",
         email: "",
         password: "",
         busy: false,
@@ -136,27 +161,37 @@ export default {
     };
   },
   methods: {
-    async login() {
-      this.form.errors = {};
+    async submit() {
       this.form.busy = true;
-      try {
-        await this.$auth.loginWith("sanctum", {
-          data: this.form
+      this.form.errors = {};
+      this.$axios
+        .post("/register", this.form)
+        .then(async r => {
+          try {
+            await this.$auth.loginWith("sanctum", {
+              data: this.form
+            });
+            // Redirect home.
+            this.$router.push({ name: "home" }).catch(() => {});
+            this.form.busy = false;
+          } catch (e) {
+            console.log(e);
+            this.form.busy = false;
+          }
+        })
+        .catch(e => {
+          this.form.busy = false;
+          if (
+            e &&
+            e.response &&
+            e.response.status &&
+            e.response.status == 422
+          ) {
+            this.form.errors = e.response.data.errors;
+          } else {
+            //this.$toast.error(this.$t("errors.e500.title"));
+          }
         });
-        this.form.busy = false;
-        // Redirect home.
-        this.$router.push({ name: "space" });
-      } catch (e) {
-        this.form.busy = false;
-        if (e && e.response && e.response.status && e.response.status == 422) {
-          this.form.errors = e.response.data.errors;
-        } else {
-          /* this.$toast.error(
-            this.$t("Communication error with the Notch server")
-          ); */
-          console.error("internal server error");
-        }
-      }
     }
   }
 };

@@ -22,7 +22,9 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
-    "@nuxtjs/tailwindcss"
+    "@nuxtjs/tailwindcss",
+    "@nuxt-hero-icons/outline/nuxt",
+    "@nuxt-hero-icons/solid/nuxt"
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -43,7 +45,7 @@ export default {
     retry: {
       retries: 3
     },
-    debug: false,
+    debug: true,
     headers: {
       common: {
         Accept: "application/json",
@@ -52,14 +54,17 @@ export default {
       delete: {},
       get: {},
       post: {},
-      put: {}
+      put: {},
+      patch: {}
     },
     progress: false,
-    withCredentials: true
+    withCredentials: true,
+    credentials: true
   },
   auth: {
     strategies: {
-      local: {
+      sanctum: {
+        provider: "laravel/sanctum",
         endpoints: {
           login: {
             url: "/login",
@@ -85,7 +90,7 @@ export default {
     }
   },
   server: {
-    port: 4000, // default: 3000
+    port: 3000, // default: 3000
     host: "localhost" // default: localhost
   },
 
@@ -105,7 +110,7 @@ export default {
       canonical: process.env.BASE_URL + "/.well-know/security.txt",
       preferredLanguages: ["fr", "en", "es"],
       // or preferredLanguages: 'fr',
-      encryptions: [process.env.BASE_URL + "/pgp-key.txt"],
+      //encryptions: [process.env.BASE_URL + "/pgp-key.txt"],
       // or encryptions: 'https://example.com/pgp-key.txt',
       acknowledgments: [process.env.BASE_URL + "/hall-of-fame"],
       // or acknowledgments: 'https://example.com/hall-of-fame.html',

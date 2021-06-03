@@ -17,6 +17,16 @@ const routes = [
     path: "/login",
     name: "login",
     component: page("auth/login.vue")
+  },
+  {
+    path: "/signup",
+    name: "register",
+    component: page("auth/signup.vue")
+  },
+  {
+    path: "/home",
+    name: "discover",
+    component: page("home.vue")
   }
 ];
 
