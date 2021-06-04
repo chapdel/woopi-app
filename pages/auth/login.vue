@@ -145,8 +145,9 @@ export default {
         });
         this.form.busy = false;
         // Redirect home.
-        this.$router.push({ name: "space" });
+        this.$router.push({ name: "discover" });
       } catch (e) {
+        console.log(e);
         this.form.busy = false;
         if (e && e.response && e.response.status && e.response.status == 422) {
           this.form.errors = e.response.data.errors;
@@ -154,7 +155,7 @@ export default {
           /* this.$toast.error(
             this.$t("Communication error with the Notch server")
           ); */
-          console.error("internal server error");
+          console.error(e);
         }
       }
     },

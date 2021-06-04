@@ -89,34 +89,6 @@ export default {
       }
     }
   },
-  /* auth: {
-      sanctum: {
-        provider: "laravel/sanctum",
-        url: process.env.API_URL,
-        endpoints: {
-          login: {
-            url: "/auth/login",
-            method: "post",
-            propertyName: "token"
-          },
-          logout: {
-            url: "/auth/logout",
-            method: "post"
-          },
-          user: {
-            url: "/auth/user",
-            method: "get",
-            propertyName: false
-          }
-        },
-        // tokenRequired: true,
-        tokenType: "Bearer",
-        token_key: "token",
-        // globalToken: true,
-        autoFetchUser: true
-      }
-    }
-  }, */
   server: {
     port: 3000, // default: 3000
     host: "localhost" // default: localhost
