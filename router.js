@@ -24,6 +24,16 @@ const routes = [
     component: page("auth/signup.vue")
   },
   {
+    path: "/password/forgot",
+    name: "password.forgot",
+    component: page("auth/password/forgot.vue")
+  },
+  {
+    path: "/reset-password/:token",
+    name: "password.reset",
+    component: page("auth/password/reset.vue")
+  },
+  {
     path: "/home",
     name: "discover",
     component: page("home.vue")

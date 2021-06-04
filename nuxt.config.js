@@ -34,7 +34,7 @@ export default {
     // https://go.nuxtjs.dev/pwa
     "@nuxtjs/pwa",
     "@nuxtjs/router",
-    "@nuxtjs/auth",
+    "@nuxtjs/auth-next",
     "@nuxtjs/dotenv",
     "@dansmaculotte/nuxt-security"
   ],
@@ -45,7 +45,7 @@ export default {
     retry: {
       retries: 3
     },
-    debug: true,
+    debug: process.env.APP_DEBUUG || false,
     headers: {
       common: {
         Accept: "application/json",
@@ -55,28 +55,28 @@ export default {
       get: {},
       post: {},
       put: {},
+      head: {},
       patch: {}
     },
-    progress: false,
-    withCredentials: true,
-    credentials: true
+    progress: true,
+    withCredentials: true
   },
   auth: {
     strategies: {
-      sanctum: {
-        provider: "laravel/sanctum",
+      local: {
+        _scheme: "local",
         endpoints: {
           login: {
-            url: "/login",
+            url: "/auth/login",
             method: "post",
             propertyName: "token"
           },
           logout: {
-            url: "/logout",
+            url: "/auth/logout",
             method: "post"
           },
           user: {
-            url: "/user",
+            url: "/auth/user",
             method: "get",
             propertyName: false
           }
@@ -89,6 +89,34 @@ export default {
       }
     }
   },
+  /* auth: {
+      sanctum: {
+        provider: "laravel/sanctum",
+        url: process.env.API_URL,
+        endpoints: {
+          login: {
+            url: "/auth/login",
+            method: "post",
+            propertyName: "token"
+          },
+          logout: {
+            url: "/auth/logout",
+            method: "post"
+          },
+          user: {
+            url: "/auth/user",
+            method: "get",
+            propertyName: false
+          }
+        },
+        // tokenRequired: true,
+        tokenType: "Bearer",
+        token_key: "token",
+        // globalToken: true,
+        autoFetchUser: true
+      }
+    }
+  }, */
   server: {
     port: 3000, // default: 3000
     host: "localhost" // default: localhost

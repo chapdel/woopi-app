@@ -12,7 +12,7 @@
     "@dansmaculotte/nuxt-security": "^0.0.3",
     "@nuxt-hero-icons/outline": "^1.0.1",
     "@nuxt-hero-icons/solid": "^1.0.1",
-    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/auth-next": "^5.0.0-1622718665.cc99959",
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/pwa": "^3.3.5",

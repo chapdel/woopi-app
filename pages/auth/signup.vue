@@ -35,7 +35,7 @@
               autocomplete="name"
               v-model="form.name"
               required=""
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border"
+              class="appearance-none rounded-none relative block w-full px-3 py-3 border"
               placeholder="Username"
               :class="{
                 'border-red-300 placeholder-red-500 text-red-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm':
@@ -59,7 +59,7 @@
               autocomplete="email"
               v-model="form.email"
               required=""
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border"
+              class="appearance-none rounded-none relative block w-full px-3 py-3 border"
               placeholder="Email address"
               :class="{
                 'border-red-300 placeholder-red-500 text-red-900 focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm':
@@ -78,7 +78,7 @@
               autocomplete="current-password"
               required=""
               v-model="form.password"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border"
+              class="appearance-none rounded-none relative block w-full px-3 py-3 border"
               :class="{
                 'border-red-300 placeholder-red-500 text-red-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
                   form.errors && form.errors.password,
@@ -121,7 +121,7 @@
         <div>
           <button
             type="submit"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             :disabled="form.busy"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -168,7 +168,7 @@ export default {
         .post("/register", this.form)
         .then(async r => {
           try {
-            await this.$auth.loginWith("sanctum", {
+            await this.$auth.loginWith("local", {
               data: this.form
             });
             // Redirect home.

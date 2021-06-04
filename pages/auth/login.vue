@@ -15,7 +15,7 @@
             :to="{ name: 'register' }"
             class="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            create your account annd join the mob
+            create your account and join the mob
           </nuxt-link>
         </p>
       </div>
@@ -36,7 +36,7 @@
               autocomplete="email"
               v-model="form.email"
               required=""
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border"
+              class="appearance-none rounded-none relative block w-full px-3 py-3 border"
               placeholder="Email address"
               :class="{
                 'border-red-300 placeholder-red-500 text-red-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm':
@@ -55,7 +55,7 @@
               autocomplete="current-password"
               required=""
               v-model="form.password"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border"
+              class="appearance-none rounded-none relative block w-full px-3 py-3 border"
               :class="{
                 'border-red-300 placeholder-red-500 text-red-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
                   form.errors && form.errors.password,
@@ -86,19 +86,19 @@
           </div>
 
           <div class="text-sm">
-            <a
-              href="#"
+            <button
+              @click.prevent="sendPasswordResetLink"
               class="font-medium text-indigo-600 hover:text-indigo-500"
             >
               Forgot your password?
-            </a>
+            </button>
           </div>
         </div>
 
         <div>
           <button
             type="submit"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             :disabled="form.busy"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -140,7 +140,7 @@ export default {
       this.form.errors = {};
       this.form.busy = true;
       try {
-        await this.$auth.loginWith("sanctum", {
+        await this.$auth.loginWith("local", {
           data: this.form
         });
         this.form.busy = false;
@@ -157,8 +157,30 @@ export default {
           console.error("internal server error");
         }
       }
+    },
+    async sendPasswordResetLink() {
+      this.form.errors = {};
+      await this.$axios
+        .post("/auth/password/request", this.form)
+        .then(r => {})
+        .catch(e => {
+          if (
+            e &&
+            e.response &&
+            e.response.status &&
+            e.response.status == 422
+          ) {
+            this.form.errors = e.response.data.errors;
+          } else {
+            /* this.$toast.error(
+            this.$t("Communication error with the Notch server")
+          ); */
+            console.error("internal server error");
+          }
+        });
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 
