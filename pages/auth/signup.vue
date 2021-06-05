@@ -165,7 +165,7 @@ export default {
       this.form.busy = true;
       this.form.errors = {};
       this.$axios
-        .post("/register", this.form)
+        .post("/auth/register", this.form)
         .then(async r => {
           try {
             await this.$auth.loginWith("local", {

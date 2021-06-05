@@ -37,6 +37,21 @@ const routes = [
     path: "/home",
     name: "discover",
     component: page("home.vue")
+  },
+  {
+    path: "/spaces",
+    name: "spaces",
+    component: page("spaces/index.vue")
+  },
+  {
+    path: "/spaces/:uid",
+    name: "spaces.show",
+    component: page("spaces/show.vue")
+  },
+  {
+    path: "/dm",
+    name: "dm",
+    component: page("dm/index.vue")
   }
 ];
 
