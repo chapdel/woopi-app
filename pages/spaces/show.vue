@@ -1,40 +1,63 @@
 <template>
   <div>
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- <header class="flex justify-between items-center bg-indigo-300 p-1">
-        <div class="flex">Left</div>
-        <div class="flex">Right</div>
+      <!-- <header class="flex justify-between items-center bg-gray-300 p-1">
+        <div class="flex w-72 bg-indigo-600">{{ space.name }}</div>
+        <div class="flex justify-between">
+          <div>{{ room.name }}</div>
+          <span>member</span>
+        </div>
       </header> -->
       <div class="flex h-full">
-        <!-- <nav class="flex w-72 h-screen bg-indigo-100">
-          <div class="w-full flex mx-auto p-2">
-            <ul class="space-y-0.5 block">
-              <li
-                v-for="(user, index) in space.members"
+        <nav class="flex w-80 h-screen bg-indigo-100 ">
+          <div class="w-full flex mx-auto p-2 overflow-y-auto">
+            <div class="space-y-0.5 block" v-if="space">
+              <nuxt-link
+                :to="{
+                  name: 'spaces.show',
+                  params: {
+                    uid: space.uid,
+                    room: room.uid
+                  }
+                }"
+                v-for="(room, index) in space.rooms"
                 :key="index"
-                class="cursor-pointer space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-0.5 text-sm rounded-md w-64"
+                class="cursor-pointer space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-1 text-sm rounded-md w-72"
               >
-                <span
-                  class="p-1 ring ring-offset-2 mt-2 ring-green-500 w-6 h-6 rounded-full"
-                  ><outline-user-icon class="h-4 w-4"></outline-user-icon
+                <span class="p-2.5 bg-purple-400 text-white w-9 h-9 rounded-md"
+                  ><outline-hashtag-icon class="h-4 w-4"></outline-hashtag-icon
                 ></span>
-                <div>
-                  <span class="space-x-2 flex">
-                    <span>{{ user.name }}</span>
-                    <outline-star-icon
-                      v-if="user.role == 'superadmin' || user.role == 'admin'"
-                      class="text-yellow-500 h-3 w-3 mt-1"
-                    ></outline-star-icon>
-                  </span>
-                  <small class="block text-small text-italic">{{
-                    user.bio
+                <div class="truncate space-y-0.5">
+                  <span class="block font-semibold">{{ room.name }}</span>
+                  <small class="text-xs text-gray-600">{{
+                    room.lastMessage.content
                   }}</small>
                 </div>
-              </li>
-            </ul>
+              </nuxt-link>
+            </div>
           </div>
-        </nav> -->
+        </nav>
         <main class="flex flex-col w-full h-screen bg-gray-50">
+          <div
+            class="space-x-2 flex justify-between items-center bg-gray-200 px-2 py-2"
+          >
+            <div class="flex space-x-2 truncate items-center">
+              <span class="p-1.5 w-8 h-8 text-white rounded-md bg-purple-500"
+                ><outline-hashtag-icon class="h-5 w-5"></outline-hashtag-icon
+              ></span>
+              <span>{{ space.name }}</span>
+            </div>
+            <div
+              v-show="space"
+              @click="showMembers = !showMembers"
+              class="flex space-x-1 text-indigo-500 cursor-pointer px-2"
+            >
+              <outline-users-icon class="h-4 w-4"></outline-users-icon>
+              <span class="text-sm">{{
+                space.members ? space.members.length : 1
+              }}</span>
+            </div>
+          </div>
           <div class="flex flex-col h-screen">
             <div
               class="overflow-y-auto discussion-content mb-2 py-2"
@@ -82,7 +105,10 @@
                 </div>
               </div>
             </div>
-            <div class="flex flex-row  items-center  bottom-0 my-2 w-full">
+            <div
+              v-if="space"
+              class="flex flex-row  items-center  bottom-0 my-2 w-full"
+            >
               <div
                 class="ml-2 mx-auto text-center text-xs font-semibold text-white border-gray w-full border bg-indigo-600 rounded-md h-12 px-2 space-x-3 mr-2 pt-1.5"
                 v-if="space.member_status == 'guest'"
@@ -214,7 +240,7 @@
             </div>
           </div>
         </main>
-        <nav class="flex w-96 h-screen bg-indigo-100">
+        <nav class="flex w-96 h-screen bg-indigo-100" v-if="showMembers">
           <div class="w-full flex mx-auto p-2">
             <ul class="space-y-0.5 block">
               <li
@@ -253,21 +279,24 @@ export default {
   data() {
     return {
       space: {},
+      room: {},
       messages: [],
       form: {
         message: "",
         errors: {},
         busy: false
-      }
+      },
+      showMembers: false
     };
   },
   async fetch() {
-    return this.$axios
-      .get("/spaces/" + this.$route.params.uid)
-      .then(r => {
-        console.log(r.data);
-        this.space = r.data;
-        this.messages = r.data.messages;
+    await this.$axios
+      .get("/rooms/" + this.$route.params.room)
+      .then(async r => {
+        this.messages = await r.data.messages;
+        this.room = r.data.room;
+        this.space = r.data.space;
+        this.scrollToEndOfChat();
       })
       .catch(e => {
         console.log(e);
@@ -285,16 +314,13 @@ export default {
         created_at: null
       });
 
-      /* var chatlist = this.$el.querySelector("#chatlist");
-      chatlist.scrollTop = chatlist.scrollHeight; */
-
       this.scrollToEndOfChat();
 
       const message = this.form.message;
       this.form.message = "";
 
       await this.$axios
-        .post("/spaces/" + this.$route.params.uid + "/message", {
+        .post("/rooms/" + this.$route.params.room + "/message", {
           message: message,
           fuid: fuid
         })
@@ -302,6 +328,10 @@ export default {
           this.messages[
             this.messages.findIndex(x => x.fuid === r.data.fuid)
           ].created_at = r.data.created_at;
+
+          this.space.rooms[
+            this.space.rooms.findIndex(x => x.uid == this.$route.params.room)
+          ].lastMessage = r.data;
         })
         .catch(e => {});
     },
@@ -314,9 +344,7 @@ export default {
     },
     scrollToEndOfChat() {
       const el = this.$refs.chatlist;
-      // alert(el.scrollHeight);
-      el.scrollTop = el.scrollHeight;
-      //alert(el.scrollTop);
+      if (el) el.scrollTop = el.scrollHeight;
     },
     async joinSpace() {
       this.form.busy = true;
@@ -332,13 +360,13 @@ export default {
     }
   },
   mounted() {
-    this.scrollToEndOfChat();
+    //this.scrollToEndOfChat();
   }
 };
 </script>
 
 <style>
 .discussion-content {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 120px);
 }
 </style>

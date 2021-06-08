@@ -34,17 +34,12 @@ const routes = [
     component: page("auth/password/reset.vue")
   },
   {
-    path: "/home",
-    name: "discover",
-    component: page("home.vue")
-  },
-  {
     path: "/spaces",
     name: "spaces",
     component: page("spaces/index.vue")
   },
   {
-    path: "/spaces/:uid",
+    path: "/spaces/:uid/:room",
     name: "spaces.show",
     component: page("spaces/show.vue")
   },

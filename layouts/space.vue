@@ -11,17 +11,17 @@
           :to="{ name: 'spaces' }"
           tag="button"
           active-class="outline-none ring-2 ring-offset-2 ring-indigo-500"
-          class="w-10 h-10 cursor-pointer mx-1 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 pl-2"
+          class="w-10 h-10 cursor-pointer mx-1 border border-transparent text-sm font-medium rounded-lg hover:rounded-full text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 pl-2"
         >
           <outline-server-icon class="h-5 w-5"></outline-server-icon>
         </nuxt-link>
-        <nuxt-link
+        <!-- <nuxt-link
           :to="{ name: 'dm' }"
           tag="button"
           class="w-10 h-10 cursor-pointer mx-1 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 pl-2"
         >
           <outline-bell-icon class="h-5 w-5"></outline-bell-icon>
-        </nuxt-link>
+        </nuxt-link> -->
         <button
           class="w-10 h-10 cursor-pointer mx-1 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 pl-2"
           @click="createModal.show = true"
@@ -202,6 +202,29 @@
                     <label
                       for="visibility_private"
                       class="font-medium text-gray-700"
+                      >Protected
+                      <p class="text-gray-500">
+                        Get notified when a candidate accepts or rejects an
+                        offer.
+                      </p></label
+                    >
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="visibility_private"
+                      name="visibility"
+                      type="radio"
+                      v-model="form.visibility"
+                      value="private"
+                      class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label
+                      for="visibility_private"
+                      class="font-medium text-gray-700"
                       >Private
                       <p class="text-gray-500">
                         Get notified when a candidate accepts or rejects an
@@ -277,7 +300,8 @@ export default {
           this.$router.push({
             name: "spaces.show",
             params: {
-              uid: r.data.uid
+              uid: r.data.uid,
+              room: r.data.home.uid
             }
           });
         })
