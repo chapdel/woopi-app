@@ -172,7 +172,7 @@ export default {
               data: this.form
             });
             // Redirect home.
-            this.$router.push({ name: "home" }).catch(() => {});
+            this.$router.push({ name: "space" }).catch(() => {});
             this.form.busy = false;
           } catch (e) {
             console.log(e);

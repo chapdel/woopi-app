@@ -14,7 +14,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ["~/plugins/helpers"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -24,7 +24,16 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     "@nuxtjs/tailwindcss",
     "@nuxt-hero-icons/outline/nuxt",
-    "@nuxt-hero-icons/solid/nuxt"
+    "@nuxt-hero-icons/solid/nuxt",
+    [
+      "@nuxtjs/moment",
+      {
+        locales: ["fr"],
+        defaultLocale: "en",
+        timezone: true,
+        defaultTimezone: "Africa/Douala"
+      }
+    ]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -58,7 +67,7 @@ export default {
       head: {},
       patch: {}
     },
-    progress: true,
+    progress: false,
     withCredentials: true
   },
   auth: {
