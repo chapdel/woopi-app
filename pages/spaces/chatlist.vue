@@ -6,15 +6,15 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>
@@ -22,14 +22,14 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>
@@ -37,14 +37,14 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>
@@ -52,14 +52,14 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>
@@ -67,15 +67,15 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>
@@ -83,15 +83,15 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>
@@ -99,14 +99,14 @@
           <div class="py-4 px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
-                <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
               </div>
               <div class="flex-1 space-y-4 py-1">
-                <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
                 <div class="space-y-2">
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/3"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/3"></div>
                 </div>
               </div>
             </div>

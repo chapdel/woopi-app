@@ -1,10 +1,6 @@
 <template>
   <div>
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- <header class="flex justify-between items-center bg-indigo-300 p-1">
-        <div class="flex">Left</div>
-        <div class="flex">Right</div>
-      </header> -->
       <div class="flex h-full">
         <nav class="flex w-80 h-screen bg-indigo-100" v-if="spaces.length > 0">
           <div class="w-full flex mx-auto p-2 overflow-y-auto">

@@ -2,67 +2,95 @@
   <div>
     <div class="flex-1 flex flex-col overflow-hidden">
       <div class="flex h-full">
-        <nav class="flex w-80 h-screen bg-indigo-100">
-          <div class="w-full overflow-hidden" v-if="$fetchState.pending">
-            <div
-              class="py-4 px-2 space-y-4 w-full mx-auto"
-              v-for="(item, index) in 20"
-              :key="index"
-            >
-              <div class="animate-pulse flex space-x-4">
-                <div class="space-y-2">
-                  <div class="rounded-md bg-blue-300 h-8 w-8"></div>
-                </div>
-                <div class="flex-1 space-y-1 py-1">
-                  <div class="h-1 bg-blue-300 rounded w-3/6"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
+        <div class="h-screen flex flex-col w-72">
+          <header class="p-2 bg-gray-300 text-gray-800 text-sm font-bold">
+            Rooms
+          </header>
+          <main class="h-64 bg-indigo-100 flex flex-grow justify-center">
+            <div class="w-72" v-if="$fetchState.pending">
+              <div
+                class="py-4 px-2 space-y-4 w-full mx-auto"
+                v-for="(item, index) in 20"
+                :key="index"
+              >
+                <div class="animate-pulse flex space-x-4">
+                  <div class="space-y-2">
+                    <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                  </div>
+                  <div class="flex-1 space-y-1 py-1">
+                    <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                    <div class="h-2 bg-blue-300 rounded w-1/4"></div>
+                    <div class="h-2 bg-blue-300 rounded w-1/5"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="w-full flex mx-auto p-2 overflow-y-auto"
-            v-if="!$fetchState.pending"
-          >
-            <div class="space-y-0.5 block" v-if="space">
-              <nuxt-link
-                :to="{
-                  name: 'spaces.show',
-                  params: {
-                    uid: space.uid,
-                    room: croom.uid
-                  }
-                }"
-                v-for="(croom, index) in space.rooms"
-                :key="index"
-                class="cursor-pointer space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-1 text-sm rounded-md w-72"
-                active-class="bg-indigo-200"
-              >
-                <span class="p-2.5 bg-purple-400 text-white w-9 h-9 rounded-md"
-                  ><outline-hashtag-icon class="h-4 w-4"></outline-hashtag-icon
-                ></span>
-                <div class="truncate space-y-0.5">
-                  <span class="block font-semibold">{{ croom.name }}</span>
-                  <small class="text-xs text-gray-600">{{
-                    croom.lastMessage.content
-                  }}</small>
-                </div>
-              </nuxt-link>
+            <div
+              class="w-72 flex mx-auto p-2 overflow-y-auto overflow-x-hidden"
+              v-if="!$fetchState.pending"
+            >
+              <div class="space-y-0.5">
+                <nuxt-link
+                  :to="{
+                    name: 'spaces.show',
+                    params: {
+                      uid: space.uid,
+                      room: croom.uid
+                    }
+                  }"
+                  v-for="(croom, index) in space.rooms"
+                  :key="index"
+                  class="cursor-pointer space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-1 text-sm rounded-md"
+                  active-class="bg-indigo-200"
+                >
+                  <span
+                    class="p-2.5 bg-purple-400 text-white w-9 h-9 rounded-md"
+                    ><outline-hashtag-icon
+                      class="h-4 w-4"
+                    ></outline-hashtag-icon
+                  ></span>
+                  <div class="truncate space-y-0.5">
+                    <span class="block font-semibold">{{ croom.name }}</span>
+                    <small class="text-xs text-gray-600">{{
+                      croom.lastMessage.content
+                    }}</small>
+                  </div>
+                </nuxt-link>
+              </div>
             </div>
-          </div>
-        </nav>
+          </main>
+        </div>
         <main class="flex flex-col w-full h-screen bg-gray-50">
           <div
             class="space-x-2 flex justify-between items-center bg-gray-200 px-2 py-2"
           >
-            <div class="flex space-x-2 truncate items-center">
+            <div
+              v-if="$fetchState.pending"
+              class="flex space-x-2 truncate animate-pulse items-center"
+            >
+              <span
+                class="p-4 w-8 h-8 text-white rounded-md bg-purple-500"
+              ></span>
+              <div class="h-4 w-32 bg-indigo-300 rounded-md"></div>
+            </div>
+            <div
+              v-if="!$fetchState.pending"
+              class="flex space-x-2 truncate items-center"
+            >
               <span class="p-1.5 w-8 h-8 text-white rounded-md bg-purple-500"
                 ><outline-hashtag-icon class="h-5 w-5"></outline-hashtag-icon
               ></span>
               <span>{{ space.name }}</span>
             </div>
-            <div class="flex space-x-2">
+
+            <div
+              v-if="$fetchState.pending"
+              class="space-x-4 animate-pulse flex"
+            >
+              <div class="h-4 w-14 rounded-md bg-indigo-300"></div>
+              <div class="h-4 w-14 rounded-md bg-indigo-300"></div>
+            </div>
+            <div v-else class="flex space-x-2">
               <div
                 v-show="space"
                 @click="showMembers = !showMembers"
@@ -77,9 +105,6 @@
                 v-show="space"
                 class="flex space-x-1 text-gray-500 cursor-pointer px-2"
               >
-                <!-- <solid-dots-vertical-icon
-                  class="h-4 w-4"
-                ></solid-dots-vertical-icon> -->
                 <div class="relative inline-block text-left">
                   <div
                     class="cursor-pointer"
@@ -90,16 +115,6 @@
                     ></solid-dots-vertical-icon>
                   </div>
 
-                  <!--
-    Dropdown menu, show/hide based on menu state.
-
-    Entering: "transition ease-out duration-100"
-      From: "transform opacity-0 scale-95"
-      To: "transform opacity-100 scale-100"
-    Leaving: "transition ease-in duration-75"
-      From: "transform opacity-100 scale-100"
-      To: "transform opacity-0 scale-95"
-  -->
                   <div
                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                     v-if="showSpaceMenu"
@@ -110,7 +125,6 @@
                     tabindex="-1"
                   >
                     <div class="py-1" role="none">
-                      <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                       <a
                         href="#"
                         class="text-gray-700 block px-4 py-2 text-sm"
@@ -147,18 +161,6 @@
                         @click="hideSpaceMenu"
                         >Leave Space</a
                       >
-                      <!-- <form method="POST" action="#" role="none">
-                        <button
-                          type="submit"
-                          class="text-gray-700 block w-full text-left px-4 py-2 text-sm"
-                          role="menuitem"
-                          @click="hideSpaceMenu"
-                          tabindex="-1"
-                          id="menu-item-3"
-                        >
-                          Sign out
-                        </button>
-                      </form> -->
                     </div>
                   </div>
                 </div>
@@ -216,8 +218,6 @@
           class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           aria-hidden="true"
         ></div>
-
-        <!-- This element is to trick the browser into centering the modal contents. -->
         <span
           class="hidden sm:inline-block sm:align-middle sm:h-screen"
           aria-hidden="true"
@@ -235,7 +235,6 @@
                 <div
                   class="mx-auto flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-md bg-indigo-100 sm:mx-0 "
                 >
-                  <!-- Heroicon name: outline/exclamation -->
                   <solid-hashtag-icon
                     class="h-5 w-5 text-indigo-600"
                   ></solid-hashtag-icon>
