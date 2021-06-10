@@ -1,36 +1,51 @@
 <template>
   <div>
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- <header class="flex justify-between items-center bg-gray-300 p-1">
-        <div class="flex w-72 bg-indigo-600">{{ space.name }}</div>
-        <div class="flex justify-between">
-          <div>{{ room.name }}</div>
-          <span>member</span>
-        </div>
-      </header> -->
       <div class="flex h-full">
-        <nav class="flex w-80 h-screen bg-indigo-100 ">
-          <div class="w-full flex mx-auto p-2 overflow-y-auto">
+        <nav class="flex w-80 h-screen bg-indigo-100">
+          <div class="w-full overflow-hidden" v-if="$fetchState.pending">
+            <div
+              class="py-4 px-2 space-y-4 w-full mx-auto"
+              v-for="(item, index) in 20"
+              :key="index"
+            >
+              <div class="animate-pulse flex space-x-4">
+                <div class="space-y-2">
+                  <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                </div>
+                <div class="flex-1 space-y-1 py-1">
+                  <div class="h-1 bg-blue-300 rounded w-3/6"></div>
+                  <div class="h-2 bg-blue-300 rounded w-1/4"></div>
+                  <div class="h-2 bg-blue-300 rounded w-1/5"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="w-full flex mx-auto p-2 overflow-y-auto"
+            v-if="!$fetchState.pending"
+          >
             <div class="space-y-0.5 block" v-if="space">
               <nuxt-link
                 :to="{
                   name: 'spaces.show',
                   params: {
                     uid: space.uid,
-                    room: room.uid
+                    room: croom.uid
                   }
                 }"
-                v-for="(room, index) in space.rooms"
+                v-for="(croom, index) in space.rooms"
                 :key="index"
                 class="cursor-pointer space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-1 text-sm rounded-md w-72"
+                active-class="bg-indigo-200"
               >
                 <span class="p-2.5 bg-purple-400 text-white w-9 h-9 rounded-md"
                   ><outline-hashtag-icon class="h-4 w-4"></outline-hashtag-icon
                 ></span>
                 <div class="truncate space-y-0.5">
-                  <span class="block font-semibold">{{ room.name }}</span>
+                  <span class="block font-semibold">{{ croom.name }}</span>
                   <small class="text-xs text-gray-600">{{
-                    room.lastMessage.content
+                    croom.lastMessage.content
                   }}</small>
                 </div>
               </nuxt-link>
@@ -47,200 +62,117 @@
               ></span>
               <span>{{ space.name }}</span>
             </div>
-            <div
-              v-show="space"
-              @click="showMembers = !showMembers"
-              class="flex space-x-1 text-indigo-500 cursor-pointer px-2"
-            >
-              <outline-users-icon class="h-4 w-4"></outline-users-icon>
-              <span class="text-sm">{{
-                space.members ? space.members.length : 1
-              }}</span>
+            <div class="flex space-x-2">
+              <div
+                v-show="space"
+                @click="showMembers = !showMembers"
+                class="flex space-x-1 text-indigo-500 cursor-pointer px-2"
+              >
+                <outline-users-icon class="h-4 w-4"></outline-users-icon>
+                <span class="text-sm">{{
+                  space.members ? space.members.length : 1
+                }}</span>
+              </div>
+              <div
+                v-show="space"
+                class="flex space-x-1 text-gray-500 cursor-pointer px-2"
+              >
+                <!-- <solid-dots-vertical-icon
+                  class="h-4 w-4"
+                ></solid-dots-vertical-icon> -->
+                <div class="relative inline-block text-left">
+                  <div
+                    class="cursor-pointer"
+                    @click="showSpaceMenu = !showSpaceMenu"
+                  >
+                    <solid-dots-vertical-icon
+                      class="h-4 w-4"
+                    ></solid-dots-vertical-icon>
+                  </div>
+
+                  <!--
+    Dropdown menu, show/hide based on menu state.
+
+    Entering: "transition ease-out duration-100"
+      From: "transform opacity-0 scale-95"
+      To: "transform opacity-100 scale-100"
+    Leaving: "transition ease-in duration-75"
+      From: "transform opacity-100 scale-100"
+      To: "transform opacity-0 scale-95"
+  -->
+                  <div
+                    class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    v-if="showSpaceMenu"
+                    role="menu"
+                    @blur="hideSpaceMenu"
+                    aria-orientation="vertical"
+                    aria-labelledby="menu-button"
+                    tabindex="-1"
+                  >
+                    <div class="py-1" role="none">
+                      <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                      <a
+                        href="#"
+                        class="text-gray-700 block px-4 py-2 text-sm"
+                        role="menuitem"
+                        @click="hideSpaceMenu"
+                        tabindex="-1"
+                        id="menu-item-0"
+                        >Add Members</a
+                      >
+                      <a
+                        href="#"
+                        class="text-gray-700 block px-4 py-2 text-sm"
+                        role="menuitem"
+                        @click="openCreateRoomModal()"
+                        tabindex="-1"
+                        id="menu-item-1"
+                        >Add Room</a
+                      >
+                      <a
+                        href="#"
+                        class="text-gray-700 block px-4 py-2 text-sm"
+                        role="menuitem"
+                        tabindex="-1"
+                        @click="hideSpaceMenu"
+                        id="menu-item-2"
+                        >Edit Space</a
+                      >
+                      <a
+                        href="#"
+                        class="text-gray-700 block px-4 py-2 text-sm"
+                        role="menuitem"
+                        tabindex="-1"
+                        id="menu-item-3"
+                        @click="hideSpaceMenu"
+                        >Leave Space</a
+                      >
+                      <!-- <form method="POST" action="#" role="none">
+                        <button
+                          type="submit"
+                          class="text-gray-700 block w-full text-left px-4 py-2 text-sm"
+                          role="menuitem"
+                          @click="hideSpaceMenu"
+                          tabindex="-1"
+                          id="menu-item-3"
+                        >
+                          Sign out
+                        </button>
+                      </form> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="flex flex-col h-screen">
-            <div
-              class="overflow-y-auto discussion-content mb-2 py-2"
-              id="chatlist"
-              ref="chatlist"
-            >
-              <div
-                class="w-full flex  px-2 py-1 space-x-4"
-                v-for="(message, index) in messages"
-                :class="{
-                  'bg-gray-100 hover:bg-gray-200': message.created_at,
-                  'bg-red-100 hover:bg-red-200': !message.created_at
-                }"
-                :key="index"
-              >
-                <span
-                  v-if="!lastSenderIsMe(index)"
-                  class="p-2 rounded-md text-white h-8 w-8 bg-indigo-400"
-                  ><solid-user-icon class="h-4 w-4"></solid-user-icon
-                ></span>
-                <span
-                  class="rounded-md text-transparent bg-transparent  h-1 w-8 "
-                  v-else
-                  ><solid-user-icon
-                    class="h-1 w-4 text-transparent"
-                  ></solid-user-icon
-                ></span>
-                <div>
-                  <div v-if="!lastSenderIsMe(index)">
-                    <small class="text-sm font-semibold text-gray-800">{{
-                      message.user.name
-                    }}</small>
-                    <small
-                      v-text="
-                        message.created_at
-                          ? $moment(message.created_at).format('LLL')
-                          : 'Just now'
-                      "
-                      class="text-xs text-gray-700"
-                    />
-                  </div>
-                  <div class="text-sm text-gray-600">
-                    {{ message.content }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              v-if="space"
-              class="flex flex-row  items-center  bottom-0 my-2 w-full"
-            >
-              <div
-                class="ml-2 mx-auto text-center text-xs font-semibold text-white border-gray w-full border bg-indigo-600 rounded-md h-12 px-2 space-x-3 mr-2 pt-1.5"
-                v-if="space.member_status == 'guest'"
-              >
-                <span>You are not part of this space!!!</span>
-                <button
-                  type="button"
-                  @click.prevent="joinSpace()"
-                  class="w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-1 text-xs bg-gray-100 text-base font-medium text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                >
-                  <svg
-                    v-if="form.busy"
-                    class="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Join now
-                </button>
-              </div>
-              <div
-                v-else
-                class="ml-2 flex flex-row border-gray items-center w-full border rounded-md h-12 px-2"
-              >
-                <button
-                  class="focus:outline-none flex items-center justify-center h-10 w-10 hover:text-red-600 text-red-400 ml-1"
-                >
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                    ></path>
-                  </svg>
-                </button>
-                <div class="w-full">
-                  <input
-                    type="text"
-                    id="message"
-                    v-model="form.message"
-                    @keyup.enter="sendMessage"
-                    class="border rounded-md border-transparent w-full focus:outline-none text-sm h-10 flex items-center"
-                    placeholder="Type your message...."
-                  />
-                </div>
-                <div class="flex flex-row">
-                  <button
-                    class="focus:outline-none flex items-center justify-center h-10 w-8 hover:text-blue-600  text-blue-400"
-                  >
-                    <svg
-                      class="w-5 h-5 "
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    id="capture"
-                    class="focus:outline-none flex items-center justify-center h-10 w-8 hover:text-green-600 text-green-400 ml-1 mr-2"
-                  >
-                    <svg
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="pl-2" v-if="space.member_status != 'guest'">
-                <button
-                  id="self"
-                  @click.prevent="sendMessage"
-                  class="flex items-center justify-center h-10 w-10 mr-2 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 text-white focus:outline-none"
-                >
-                  <svg
-                    class="w-5 h-5 transform rotate-90 -mr-px"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
+            <nuxt />
           </div>
         </main>
-        <nav class="flex w-96 h-screen bg-indigo-100" v-if="showMembers">
+        <nav
+          class="flex w-96 h-screen bg-indigo-100 transition delay-150 border-2 border-light-blue-900 duration-300 ease-in-out"
+          v-if="showMembers"
+        >
           <div class="w-full flex mx-auto p-2">
             <ul class="space-y-0.5 block">
               <li
@@ -270,6 +202,202 @@
         </nav>
       </div>
     </div>
+    <div
+      class="fixed z-10 inset-0 overflow-y-auto"
+      aria-labelledby="modal-title"
+      role="dialog"
+      v-if="createRoomModal.show"
+      aria-modal="true"
+    >
+      <div
+        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+      >
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          aria-hidden="true"
+        ></div>
+
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span
+          class="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+          >&#8203;</span
+        >
+        <div
+          class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+        >
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="mt-3 space-y-2 sm:mt-0 sm:ml-4">
+              <h3
+                class="text-lg space-x-2 flex items-center content-start leading-6 font-medium text-gray-900"
+                id="modal-title"
+              >
+                <div
+                  class="mx-auto flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-md bg-indigo-100 sm:mx-0 "
+                >
+                  <!-- Heroicon name: outline/exclamation -->
+                  <solid-hashtag-icon
+                    class="h-5 w-5 text-indigo-600"
+                  ></solid-hashtag-icon>
+                </div>
+                <div>Create a room</div>
+              </h3>
+              <div>
+                <p class="text-sm text-gray-500">
+                  Are you sure you want to deactivate your account? All of your
+                  data will be permanently removed. This action cannot be
+                  undone.
+                </p>
+              </div>
+              <div class="w-full">
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  autocomplete="off"
+                  required=""
+                  v-model="form.name"
+                  class="appearance-none rounded-none relative block w-full px-3 py-3 border"
+                  :class="{
+                    'border-red-300 placeholder-red-500 text-red-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
+                      form.errors && form.errors.name,
+                    'border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
+                      form.errors && !form.errors.name
+                  }"
+                />
+                <span
+                  v-if="form.errors && form.errors.name"
+                  class="text-sm text-red-500"
+                  >{{ form.errors.name[0] }}</span
+                >
+              </div>
+              <div class="w-full">
+                <label
+                  for="about"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  About
+                </label>
+                <div class="mt-1">
+                  <textarea
+                    id="about"
+                    name="about"
+                    rows="3"
+                    class="appearance-none rounded-none relative block w-full px-3 py-3 border"
+                    :class="{
+                      'border-red-300 placeholder-red-500 text-red-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
+                        form.errors && form.errors.description,
+                      'border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm':
+                        form.errors && !form.errors.description
+                    }"
+                  />
+                  <span
+                    v-if="form.errors && form.errors.description"
+                    class="text-sm text-red-500"
+                    >{{ form.errors.description[0] }}</span
+                  >
+                </div>
+                <p class="mt-2 text-sm text-gray-500">
+                  Brief description for your room.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="visibility_public"
+                      name="visibility"
+                      type="radio"
+                      value="public"
+                      v-model="form.visibility"
+                      class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label
+                      for="visibility_public"
+                      class="font-medium text-gray-700"
+                      >Public
+                      <p class="text-gray-500">
+                        Get notified when a candidate applies for a job.
+                      </p>
+                    </label>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="visibility_private"
+                      name="visibility"
+                      type="radio"
+                      v-model="form.visibility"
+                      value="private"
+                      class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label
+                      for="visibility_private"
+                      class="font-medium text-gray-700"
+                      >Protected
+                      <p class="text-gray-500">
+                        Get notified when a candidate accepts or rejects an
+                        offer.
+                      </p></label
+                    >
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="visibility_private"
+                      name="visibility"
+                      type="radio"
+                      v-model="form.visibility"
+                      value="private"
+                      class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label
+                      for="visibility_private"
+                      class="font-medium text-gray-700"
+                      >Private
+                      <p class="text-gray-500">
+                        Get notified when a candidate accepts or rejects an
+                        offer.
+                      </p></label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              :disabled="form.busy"
+              @click.prevent="submitRoom"
+              class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              <spinner v-if="form.busy"></spinner> Create
+            </button>
+            <button
+              type="button"
+              @click="hiddeRoomModal"
+              :disabled="form.busy"
+              class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -279,73 +407,68 @@ export default {
   data() {
     return {
       space: {},
-      room: {},
-      messages: [],
       form: {
-        message: "",
+        description: "",
+        name: "",
+        visibility: "public",
         errors: {},
         busy: false
       },
-      showMembers: false
+      showMembers: false,
+      showSpaceMenu: false,
+      createRoomModal: {
+        show: false
+      }
     };
   },
+  fetchOnServer: false,
   async fetch() {
     await this.$axios
-      .get("/rooms/" + this.$route.params.room)
+      .get("/spaces/" + this.$route.params.uid)
       .then(async r => {
-        this.messages = await r.data.messages;
-        this.room = r.data.room;
-        this.space = r.data.space;
-        this.scrollToEndOfChat();
+        this.space = r.data;
       })
       .catch(e => {
         console.log(e);
       });
   },
   methods: {
-    async sendMessage() {
+    hideSpaceMenu() {
+      this.showSpaceMenu = false;
+    },
+    openCreateRoomModal() {
+      this.createRoomModal.show = true;
+      this.showSpaceMenu = false;
+    },
+    hiddeRoomModal() {
+      this.createRoomModal.show = false;
+      this.form.name = "";
+      this.form.description = "";
+      this.form.visibility = "public";
+      this.form.errors = {};
+    },
+    async submitRoom() {
       this.form.errors = {};
       this.form.busy = true;
-      const fuid = this.$uuid.v4();
-      await this.messages.push({
-        content: this.form.message,
-        user: this.$auth.user,
-        fuid: fuid,
-        created_at: null
-      });
-
-      this.scrollToEndOfChat();
-
-      const message = this.form.message;
-      this.form.message = "";
-
       await this.$axios
-        .post("/rooms/" + this.$route.params.room + "/message", {
-          message: message,
-          fuid: fuid
-        })
+        .post("/spaces/" + this.$route.params.uid + "/rooms", this.form)
         .then(r => {
-          this.messages[
-            this.messages.findIndex(x => x.fuid === r.data.fuid)
-          ].created_at = r.data.created_at;
-
-          this.space.rooms[
-            this.space.rooms.findIndex(x => x.uid == this.$route.params.room)
-          ].lastMessage = r.data;
+          this.space.rooms.push(r.data);
+          this.form.busy = false;
+          this.hiddeRoomModal();
+          this.$router.push({
+            namr: "spaces.show",
+            params: {
+              uid: this.$route.params.uid,
+              room: r.data.uid
+            }
+          });
         })
-        .catch(e => {});
+        .catch(e => {
+          this.form.busy = false;
+        });
     },
-    lastSenderIsMe(index) {
-      if (index > 0) {
-        return this.messages[index].user_id == this.messages[index - 1].user_id;
-      }
 
-      return false;
-    },
-    scrollToEndOfChat() {
-      const el = this.$refs.chatlist;
-      if (el) el.scrollTop = el.scrollHeight;
-    },
     async joinSpace() {
       this.form.busy = true;
       await this.$axios

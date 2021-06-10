@@ -96,6 +96,12 @@ export default {
         // globalToken: true,
         autoFetchUser: true
       }
+    },
+    redirect: {
+      login: "/login",
+      logout: "/",
+      callback: "/login",
+      home: "/spaces"
     }
   },
   server: {

@@ -39,10 +39,26 @@ const routes = [
     component: page("spaces/index.vue")
   },
   {
-    path: "/spaces/:uid/:room",
-    name: "spaces.show",
-    component: page("spaces/show.vue")
+    path: "/spaces/:uid",
+    component: page("spaces/show.vue"),
+    children: [
+      {
+        path: "",
+        redirect: "home"
+      },
+      {
+        path: "home",
+        name: "spaces.home",
+        component: page("spaces/show.vue")
+      },
+      {
+        path: ":room",
+        name: "spaces.show",
+        component: page("spaces/chatlist.vue")
+      }
+    ]
   },
+
   {
     path: "/dm",
     name: "dm",

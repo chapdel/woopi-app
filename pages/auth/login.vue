@@ -145,7 +145,7 @@ export default {
         });
         this.form.busy = false;
         // Redirect home.
-        this.$router.push({ name: "spaces" });
+        // this.$router.push({ name: "spaces" });
       } catch (e) {
         this.form.busy = false;
         if (e && e.response && e.response.status && e.response.status == 422) {
