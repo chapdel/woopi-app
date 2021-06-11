@@ -37,6 +37,11 @@
 <script>
 export default {
   layout: "space",
+  head() {
+    return {
+      title: "Spaces"
+    };
+  },
   data() {
     return {
       spaces: [],
