@@ -108,6 +108,11 @@ export default {
     port: 3000, // default: 3000
     host: "localhost" // default: localhost
   },
+  tailwindcss: {
+    jit: true
+    // add '~tailwind.config` alias
+    //exposeConfig: true
+  },
 
   security: {
     hsts: {

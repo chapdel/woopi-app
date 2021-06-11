@@ -113,7 +113,7 @@
           </div>
         </div>
         <div
-          class="overflow-y-auto"
+          class="overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-indigo-300 scrollbar-track-rounded-md"
           id="chatlist"
           ref="chatlist"
           v-if="!$fetchState.pending"

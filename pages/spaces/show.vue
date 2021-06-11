@@ -15,18 +15,18 @@
               >
                 <div class="animate-pulse flex space-x-4">
                   <div class="space-y-2">
-                    <div class="rounded-md bg-blue-300 h-8 w-8"></div>
+                    <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
                   </div>
                   <div class="flex-1 space-y-1 py-1">
-                    <div class="h-1 bg-blue-300 rounded w-3/6"></div>
-                    <div class="h-2 bg-blue-300 rounded w-1/4"></div>
-                    <div class="h-2 bg-blue-300 rounded w-1/5"></div>
+                    <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
+                    <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                    <div class="h-2 bg-indigo-300 rounded w-1/5"></div>
                   </div>
                 </div>
               </div>
             </div>
             <div
-              class="w-72 flex mx-auto p-2 overflow-y-auto overflow-x-hidden"
+              class="w-72 flex mx-auto p-2 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-indigo-300 scrollbar-track-rounded-md"
               v-if="!$fetchState.pending"
             >
               <div class="space-y-0.5">
@@ -180,7 +180,7 @@
           </div>
         </main>
         <nav
-          class="flex w-96 h-screen bg-indigo-100 transition delay-150 border-2 border-light-blue-900 duration-300 ease-in-out"
+          class="flex w-96 h-screen bg-indigo-100 transition delay-150 border-2 border-light-indigo-900 duration-300 ease-in-out"
           v-if="showMembers"
         >
           <div class="w-full flex mx-auto p-2">
@@ -502,9 +502,6 @@ export default {
 </script>
 
 <style>
-.w-68 {
-  width: 17rem !important;
-}
 .hover-trigger .hover-target {
   display: none;
 }
