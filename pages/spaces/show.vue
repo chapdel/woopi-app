@@ -40,7 +40,7 @@
                   }"
                   v-for="(croom, index) in space.rooms"
                   :key="index"
-                  class="cursor-pointer space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-1 text-sm rounded-md"
+                  class="cursor-pointer relative space-x-2 flex hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-1 text-sm rounded-md w-68 hover-trigger"
                   active-class="bg-indigo-200"
                 >
                   <span
@@ -50,11 +50,19 @@
                     ></outline-hashtag-icon
                   ></span>
                   <div class="truncate space-y-0.5">
-                    <span class="block font-semibold">{{ croom.name }}</span>
+                    <span class="block font-semibold ">{{ croom.name }}</span>
                     <small class="text-xs text-gray-600">{{
                       croom.lastMessage.content
                     }}</small>
                   </div>
+                  <button
+                    class="absolute text-white font-semibold bg-indigo-400 rounded-md content-between space-y-1 p-1 hover-target right-0"
+                    @click.prevent="openUpdateRoomModal(croom)"
+                  >
+                    <outline-cog-icon
+                      class="h-3 w-3 cursor-pointer"
+                    ></outline-cog-icon>
+                  </button>
                 </nuxt-link>
               </div>
             </div>
@@ -403,6 +411,12 @@
 <script>
 export default {
   layout: "space",
+  head() {
+    return {
+      titleTemplate:
+        "%s | " + (this.space.name != null ? this.space.name : "Spaces")
+    };
+  },
   data() {
     return {
       space: {},
@@ -417,19 +431,13 @@ export default {
       showSpaceMenu: false,
       createRoomModal: {
         show: false
-      }
+      },
+      settingModal: false
     };
   },
   fetchOnServer: false,
   async fetch() {
-    await this.$axios
-      .get("/spaces/" + this.$route.params.uid)
-      .then(async r => {
-        this.space = r.data;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.space = await this.$axios.$get("/spaces/" + this.$route.params.uid);
   },
   methods: {
     hideSpaceMenu() {
@@ -445,6 +453,12 @@ export default {
       this.form.description = "";
       this.form.visibility = "public";
       this.form.errors = {};
+    },
+    openUpdateRoomModal(room) {
+      this.settingModal = true;
+      this.form.name = room.name;
+      this.form.description = room.description;
+      this.form.visibility = room.visibility;
     },
     async submitRoom() {
       this.form.errors = {};
@@ -488,7 +502,14 @@ export default {
 </script>
 
 <style>
-.discussion-content {
-  height: calc(100vh - 120px);
+.w-68 {
+  width: 17rem !important;
+}
+.hover-trigger .hover-target {
+  display: none;
+}
+
+.hover-trigger:hover .hover-target {
+  display: block;
 }
 </style>

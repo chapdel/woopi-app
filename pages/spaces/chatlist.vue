@@ -296,14 +296,16 @@
         </div>
       </footer>
     </div>
-
-    <!--
-     -->
   </div>
 </template>
 
 <script>
 export default {
+  head() {
+    return {
+      title: this.room.name != null ? this.room.name : "Room"
+    };
+  },
   data() {
     return {
       room: {},
@@ -316,14 +318,9 @@ export default {
   },
   fetchOnServer: false,
   async fetch() {
-    await this.$axios
-      .get("/rooms/" + this.$route.params.room)
-      .then(async r => {
-        this.room = r.data;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.room = await this.$axios.$get("/rooms/" + this.$route.params.room);
+
+    this.scrollToEndOfChat();
   },
   methods: {
     async sendMessage() {
@@ -394,6 +391,16 @@ export default {
       if (newRoute.params.room != oldRoute.params.room) {
         this.$fetch();
       }
+    }
+    /*  room: function(newState, oldState) {
+      if (!this.$fetchState.pending && !this.$fetchState.error) {
+        this.scrollToEndOfChat();
+      }
+    } */
+  },
+  mounted() {
+    if (!this.$fetchState.pending && !this.$fetchState.error) {
+      this.scrollToEndOfChat();
     }
   }
 };
