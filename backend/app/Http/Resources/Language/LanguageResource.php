@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Http\Resources\Language;
+
+use App\Models\Language;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\App;
+
+class LanguageResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        if (App::getLocale() != "en") {
+            $translation = $this->translations()->whereLanguageId(Language::whereIsoCode(App::getLocale())->first()->id)->first();
+
+            if ($translation)
+
+                return [
+                    'id' => $this->id,
+                    'name' => $translation->data->name,
+                    'iso_code' => $this->iso_code,
+                ];
+            else
+                return [
+                    'id' => $this->id,
+                    'name' => $this->name,
+                    'iso_code' => $this->iso_code,
+                ];
+        }
+
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'iso_code' => $this->iso_code,
+        ];
+    }
+}
