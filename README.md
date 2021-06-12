@@ -4,23 +4,19 @@
 
 ### Authentication
 
+- Login with email and password
+
 ### Spaces
+
+- Create Space
+- Update Space
+- Join Space
+- Leave Space
 
 ### Rooms
 
-```bash
-# install dependencies
-$ npm install
+- Create Room
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+### Discussions
 
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+- Write message in room
