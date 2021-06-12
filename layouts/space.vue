@@ -39,7 +39,6 @@
       <nuxt></nuxt>
     </div>
 
-    <!-- This example requires Tailwind CSS v2.0+ -->
     <div
       class="fixed z-10 inset-0 overflow-y-auto"
       aria-labelledby="modal-title"

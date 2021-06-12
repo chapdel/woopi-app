@@ -109,7 +109,6 @@ export default {
     host: "localhost" // default: localhost
   },
   tailwindcss: {
-    jit: true
     // add '~tailwind.config` alias
     //exposeConfig: true
   },

@@ -2,9 +2,34 @@
   <div>
     <div class="flex-1 flex flex-col overflow-hidden">
       <div class="flex h-full">
-        <nav class="flex w-80 h-screen bg-indigo-100" v-if="spaces.length > 0">
-          <div class="w-full flex mx-auto p-2 overflow-y-auto">
-            <div class="space-y-0.5 block">
+        <nav class="flex w-72 h-screen bg-indigo-100">
+          <div class="w-72" v-if="$fetchState.pending">
+            <div
+              class="py-4 px-2 space-y-4 w-full mx-auto"
+              v-for="(item, index) in 20"
+              :key="index"
+            >
+              <div class="animate-pulse flex space-x-4">
+                <div class="space-y-2">
+                  <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
+                </div>
+                <div class="flex-1 space-y-1 py-1">
+                  <div class="h-1 bg-indigo-300 rounded w-3/6"></div>
+                  <div class="h-2 bg-indigo-300 rounded w-1/4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="!$fetchState.pending"
+            class="w-full flex mx-auto   flex-col"
+          >
+            <header class="p-2 bg-gray-300 text-gray-800 text-sm font-bold">
+              Spaces
+            </header>
+            <div
+              class="space-y-0.5 p-2 block overflow-y-auto overflow-x-hidden flex-grow scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-indigo-300 scrollbar-track-rounded-m"
+            >
               <nuxt-link
                 v-for="(space, index) in spaces"
                 :key="index"
@@ -15,10 +40,10 @@
                     room: space.home.uid
                   }
                 }"
-                class="cursor-pointer space-x-2 flex items-center hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-2 rounded-md w-72"
+                class="cursor-pointer space-x-2 flex items-center hover:bg-indigo-200 focus:bg-indigo-200 px-2 py-2 rounded-md w-68"
               >
                 <span
-                  class="p-1 hover:animate-pulse ring ring-offset-2 hover:ring-green-500 w-6 h-6 rounded-md"
+                  class="p-2 hover:animate-pulse bg-indigo-400 text-white w-8 h-8 rounded-md"
                   ><outline-user-icon class="h-4 w-4"></outline-user-icon
                 ></span>
                 <div class="truncate">
@@ -49,79 +74,8 @@ export default {
     };
   },
   async fetch() {
-    return this.$axios
-      .get("/spaces")
-      .then(r => {
-        console.log(r.data);
-        this.spaces = r.data;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.spaces = await this.$axios.$get("/spaces");
   },
-  /* methods: {
-    async sendMessage() {
-      this.form.errors = {};
-      this.form.busy = true;
-      const fuid = this.$uuid.v4();
-      await this.messages.push({
-        content: this.form.message,
-        space: this.$auth.space,
-        fuid: fuid,
-        created_at: null
-      });
-
-      this.scrollToEndOfChat();
-
-      const message = this.form.message;
-      this.form.message = "";
-
-      await this.$axios
-        .post("/spaces/" + this.$route.params.uid + "/message", {
-          message: message,
-          fuid: fuid
-        })
-        .then(r => {
-          this.messages[
-            this.messages.findIndex(x => x.fuid === r.data.fuid)
-          ].created_at = r.data.created_at;
-        })
-        .catch(e => {});
-    },
-    lastSenderIsMe(index) {
-      if (index > 0) {
-        return this.messages[index].space_id == this.messages[index - 1].space_id;
-      }
-
-      return false;
-    },
-    scrollToEndOfChat() {
-      const el = this.$refs.chatlist;
-      // alert(el.scrollHeight);
-      el.scrollTop = el.scrollHeight;
-      //alert(el.scrollTop);
-    },
-    async joinSpace() {
-      this.form.busy = true;
-      await this.$axios
-        .post("/spaces/" + this.$route.params.uid + "/join")
-        .then(r => {
-          this.$fetch();
-          this.form.busy = false;
-        })
-        .catch(e => {
-          this.form.busy = false;
-        });
-    }
-  }, */
-  mounted() {
-    //this.scrollToEndOfChat();
-  }
+  fetchOnServer: false
 };
 </script>
-
-<style>
-.discussion-content {
-  height: calc(100vh - 70px);
-}
-</style>

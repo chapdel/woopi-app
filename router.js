@@ -44,12 +44,8 @@ const routes = [
     children: [
       {
         path: "",
-        redirect: "home"
-      },
-      {
-        path: "home",
         name: "spaces.home",
-        component: page("spaces/show.vue")
+        component: page("spaces/landing.vue")
       },
       {
         path: ":room",

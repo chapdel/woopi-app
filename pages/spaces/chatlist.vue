@@ -3,7 +3,7 @@
     <div class="h-screen flex flex-col">
       <main class="h-64 flex flex-col flex-grow text-white">
         <div class="overflow-hidden" v-if="$fetchState.pending">
-          <div class="py-4 px-2 space-y-4 w-full mx-auto">
+          <div class="px-2 space-y-4 w-full mx-auto">
             <div class="animate-pulse flex space-x-4">
               <div class="space-y-2">
                 <div class="rounded-md bg-indigo-300 h-8 w-8"></div>
@@ -134,7 +134,6 @@
               <svg
                 v-if="message.type == 'system'"
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
                 fill="currentColor"
                 class="w-4"
                 viewBox="0 0 16 16"
