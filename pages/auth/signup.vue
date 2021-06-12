@@ -4,7 +4,7 @@
   >
     <div class="max-w-md w-full space-y-8">
       <div>
-        <img class="mx-auto h-12 w-auto" src="/icon.png" alt="Woopi" />
+        <img class="mx-auto h-12 w-auto" src="/woopi-full.png" alt="Woopi" />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Create your account
         </h2>
@@ -94,29 +94,6 @@
             >
           </div>
         </div>
-
-        <!-- <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input
-              id="remember_me"
-              name="remember_me"
-              type="checkbox"
-              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label for="remember_me" class="ml-2 block text-sm text-gray-900">
-              Remember me
-            </label>
-          </div>
-
-          <div class="text-sm">
-            <a
-              href="#"
-              class="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Forgot your password?
-            </a>
-          </div>
-        </div> -->
 
         <div>
           <button
