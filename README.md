@@ -1,6 +1,12 @@
-# woopi-web
+# Woopi: **Gitter.im clone build with laravel and Nuxt JS**
 
-## Build Setup
+## Features
+
+### Authentication
+
+### Spaces
+
+### Rooms
 
 ```bash
 # install dependencies
