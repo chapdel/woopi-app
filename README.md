@@ -1,4 +1,4 @@
-# Woopi: **Gitter.im clone build with laravel and Nuxt JS**
+# Woopi: **Gitter.im / Discord clone build with laravel and Nuxt JS**
 
 ## Features
 
